@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart - Essence Elegance</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="light-theme">
+    <header class="site-header">
+        <a href="index.html" class="logo">ESSENCE ELEGANCE</a>
+        <nav>
+            <a href="register.html">Register</a>
+            <a href="login.html">Login</a>
+            <a href="shop.html">Shop</a>
+            <div class="dropdown">
+                <a href="cart.html" class="active">Cart <i class="fas fa-chevron-down"></i></a>
+            </div>
+            <div class="dropdown">
+                <a href="#">My account <i class="fas fa-chevron-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="#">Password Reset</a>
+                    <a href="#">Account</a>
+                    <a href="#">Privacy Policy</a>
+                </div>
+            </div>
+            <a href="#">Orders</a>
+            <a href="#" class="search-icon"><i class="fas fa-search"></i></a>
+        </nav>
+    </header>
+
+    <main class="cart-container">
+        <h1>Cart</h1>
+
+        <!-- Empty Cart Message -->
+        <div class="cart-empty-message">
+            <i class="far fa-square"></i>
+            <p>Your cart is currently empty.</p>
+            <a href="shop.html" class="btn-return-shop">RETURN TO SHOP</a>
+        </div>
+
+        <!-- Cart Items -->
+        <div class="cart-items">
+            <!-- Items injected by JS -->
+        </div>
+
+        <!-- Order Summary & Checkout -->
+        <div class="order-summary"
+            style="display: none; margin-top: 2rem; border-top: 1px solid #eee; padding-top: 1rem;">
+            <div style="text-align: right; margin-bottom: 1rem;">
+                <h3 id="cart-total">Total: ₹0.00</h3>
+            </div>
+            <button id="checkout-btn" class="btn-primary" style="float: right;">Proceed to Checkout</button>
+            <div style="clear: both;"></div>
+        </div>
+
+        <!-- Checkout Form (Hidden by default) -->
+        <div id="checkout-form-container"
+            style="display: none; margin-top: 2rem; border: 1px solid #ddd; padding: 2rem; border-radius: 8px;">
+            <h2>Shipping Details</h2>
+            <form id="order-form" class="auth-form">
+                <div class="form-group full-width">
+                    <label for="street">Street Address *</label>
+                    <input type="text" id="street" required>
+                </div>
+                <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label for="city">City *</label>
+                        <input type="text" id="city" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="state">State *</label>
+                        <input type="text" id="state" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="zip">Zip/Postal Code *</label>
+                        <input type="text" id="zip" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="country">Country *</label>
+                        <input type="text" id="country" required>
+                    </div>
+                </div>
+                <input type="hidden" id="totalAmount">
+
+                <div class="form-actions" style="margin-top: 1.5rem;">
+                    <button type="submit" class="btn-primary">Place Order</button>
+                    <button type="button" class="btn-secondary"
+                        onclick="document.getElementById('checkout-form-container').style.display='none'; document.getElementById('checkout-btn').style.display='block';">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p class="design-credit">Design By PERFUME MALL PVT.LTD</p>
+        </div>
+    </footer>
+    <script src="auth-check.js"></script>
+    <script>
+        // Inline cart.js content for simplicity as requested 'link cart.js' but I'll inline to ensure it works immediately without file access issues
+        // Actually I already created cart.js, so I should link it.
+    </script>
+    <script src="cart.js"></script>
+</body>
+
+</html>

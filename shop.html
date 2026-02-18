@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - Essence Elegance</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="light-theme">
+    <header class="site-header">
+        <a href="index.html" class="logo">ESSENCE ELEGANCE</a>
+        <nav>
+            <a href="register.html">Register</a>
+            <a href="login.html">Login</a>
+            <a href="shop.html" class="active">Shop</a>
+            <div class="dropdown">
+                <a href="cart.html">Cart <i class="fas fa-chevron-down"></i></a>
+            </div>
+            <div class="dropdown">
+                <a href="#">My account <i class="fas fa-chevron-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="#">Password Reset</a>
+                    <a href="#">Account</a>
+                    <a href="#">Privacy Policy</a>
+                </div>
+            </div>
+            <a href="#">Orders</a>
+            <a href="#" class="search-icon"><i class="fas fa-search"></i></a>
+        </nav>
+    </header>
+
+    <main class="shop-container">
+        <h1>Shop</h1>
+        <p class="breadcrumbs"><a href="index.html">Home</a> / Shop</p>
+
+        <div class="shop-controls">
+            <p>Showing all 4 results</p>
+            <select name="sort" id="sort">
+                <option value="default">Default sorting</option>
+                <option value="price-low">Sort by price: low to high</option>
+                <option value="price-high">Sort by price: high to low</option>
+            </select>
+        </div>
+
+        <div class="product-grid">
+            <!-- Product 1 -->
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?q=80&w=2504&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    alt="BOIS MARDCAIN EAU DE PARFUM">
+                <h3>BOIS MAROCAIN EAU DE PARFUM</h3>
+                <p class="price">₹24,289.08</p>
+                <button class="add-to-cart">Add to cart</button>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1512777190995-2d93d56f1406?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    alt="FUCKING FABULOUS ALL OVER BODY SPRAY DETAILS">
+                <h3>FUCKING FABULOUS ALL OVER BODY SPRAY DETAILS</h3>
+                <p class="price">₹1.00</p>
+                <button class="add-to-cart">Add to cart</button>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1620917670397-a4ad774dc594?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    alt="Mandarino Di Amalfi Eau de Parfum">
+                <h3>Mandarino Di Amalfi Eau de Parfum • 50ml</h3>
+                <p class="price">₹20,500.00</p>
+                <button class="read-more">Read More</button>
+            </div>
+
+            <!-- Product 4 -->
+            <div class="product-card">
+                <span class="sale-badge">Sale!</span>
+                <img src="https://images.unsplash.com/photo-1594035910387-fea47794261f?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    alt="OMBRE LEATHER EAU DE PARFUM">
+                <h3>OMBRE LEATHER EAU DE PARFUM</h3>
+                <p class="price"><del>₹13,585.45</del> <ins>₹13,173.77</ins></p>
+                <button class="add-to-cart">Add to cart</button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <h3>CONTACT US</h3>
+            <p class="design-credit">Design By PERFUME MALL PVT.LTD</p>
+        </div>
+        <div class="footer-bottom">
+            <div class="privacy-policy">Privacy Policy</div>
+            <div class="copyright">Copyright © 2026 Essence Elegance</div>
+            <div class="credit">Inspiro Theme by WPZOOM</div>
+        </div>
+    </footer>
+    <script src="auth-check.js"></script>
+    <script src="shop.js"></script>
+</body>
+
+</html>

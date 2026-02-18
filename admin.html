@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Essence Elegance</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .admin-container {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #eee;
+        }
+
+        .tab-btn {
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            color: #666;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            color: var(--accent-blue);
+            border-bottom: 2px solid var(--accent-blue);
+            margin-bottom: -2px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+        }
+
+        th,
+        td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: #f8f8f8;
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background-color: #ffeeba;
+            color: #856404;
+        }
+
+        .status-processing {
+            background-color: #b8daff;
+            color: #004085;
+        }
+
+        .status-shipped {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-delivered {
+            background-color: #c3e6cb;
+            color: #155724;
+        }
+
+        .status-cancelled {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Form Styles (from previous step) */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .preview-image {
+            max-width: 200px;
+            margin-top: 1rem;
+            display: none;
+            border-radius: 4px;
+        }
+
+        button.action-btn {
+            margin-right: 0.5rem;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+
+        .approve-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body class="light-theme">
+    <header class="site-header">
+        <a href="index.html" class="logo">ESSENCE ELEGANCE</a>
+        <nav>
+            <a href="shop.html">Shop</a>
+            <div class="dropdown">
+                <a href="#">Admin <i class="fas fa-chevron-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="#" id="logout-btn">Logout</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="admin-container">
+        <div class="admin-header">
+            <h1>Admin Dashboard</h1>
+            <p>Manage products, users, and orders</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="products">Products</button>
+            <button class="tab-btn" data-tab="users">Users</button>
+            <button class="tab-btn" data-tab="orders">Orders</button>
+        </div>
+
+        <!-- Products Tab -->
+        <div id="products" class="tab-content active">
+            <h2>Add New Product</h2>
+            <form id="product-form" class="auth-form" style="margin-bottom: 3rem;">
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label for="name">Product Name *</label>
+                        <input type="text" id="name" name="name" required
+                            placeholder="e.g. BOIS MAROCAIN EAU DE PARFUM">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="description">Description</label>
+                        <textarea id="description" name="description" rows="4"
+                            style="padding: 0.8rem; border: 1px solid var(--border-color); border-radius: 4px; font-family: inherit;"
+                            placeholder="Enter product description..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price">Price (₹) *</label>
+                        <input type="number" id="price" name="price" step="0.01" required placeholder="0.00">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="originalPrice">Original Price (₹) (Optional)</label>
+                        <input type="number" id="originalPrice" name="originalPrice" step="0.01" placeholder="0.00">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="image">Image URL *</label>
+                        <input type="url" id="image" name="image" required placeholder="https://example.com/image.jpg">
+                        <img id="image-preview" src="" alt="Preview" class="preview-image">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category" name="category"
+                            style="padding: 0.8rem; border: 1px solid var(--border-color); border-radius: 4px; font-family: inherit; background: #fcfcfc;">
+                            <option value="General">General</option>
+                            <option value="Men">Men</option>
+                            <option value="Women">Women</option>
+                            <option value="Unisex">Unisex</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="stock">Stock</label>
+                        <input type="number" id="stock" name="stock" value="10" min="0">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <div class="form-check">
+                            <input type="checkbox" id="isSale" name="isSale">
+                            <label for="isSale">Market as On Sale</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Add Product</button>
+                    <button type="button" class="btn-secondary"
+                        onclick="window.location.href='shop.html'">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Users Tab -->
+        <div id="users" class="tab-content">
+            <h2>Registered Users</h2>
+            <div style="overflow-x: auto;">
+                <table id="users-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Full Name</th>
+                            <th>Joined</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Users will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Orders Tab -->
+        <div id="orders" class="tab-content">
+            <h2>Recent Orders</h2>
+            <div style="overflow-x: auto;">
+                <table id="orders-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>User</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Orders will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p class="design-credit">Admin Panel - Essence Elegance</p>
+        </div>
+    </footer>
+
+    <script src="admin.js"></script>
+    <script>
+        // Tab functionality
+        const tabs = document.querySelectorAll('.tab-btn');
+        const contents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all
+                tabs.forEach(t => t.classList.remove('active'));
+                contents.forEach(c => c.classList.remove('active'));
+
+                // Add active class to clicked
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+
+                // Load data if switching to tab
+                if (tab.dataset.tab === 'users') loadUsers();
+                if (tab.dataset.tab === 'orders') loadOrders();
+            });
+        });
+
+        // Image preview
+        document.getElementById('image').addEventListener('input', function (e) {
+            const preview = document.getElementById('image-preview');
+            if (e.target.value) {
+                preview.src = e.target.value;
+                preview.style.display = 'block';
+            } else {
+                preview.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+
+</html>

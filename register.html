@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Essence Elegance</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="light-theme">
+    <header class="site-header">
+        <a href="index.html" class="logo">ESSENCE ELEGANCE</a>
+        <nav>
+            <a href="register.html" class="active">Register</a>
+            <a href="#">Login</a>
+            <a href="#">Shop</a>
+            <div class="dropdown">
+                <a href="#">Cart <i class="fas fa-chevron-down"></i></a>
+            </div>
+            <div class="dropdown">
+                <a href="#">My account <i class="fas fa-chevron-down"></i></a>
+            </div>
+            <a href="#">Orders</a>
+            <a href="#" class="search-icon"><i class="fas fa-search"></i></a>
+        </nav>
+    </header>
+
+    <main class="auth-container">
+        <h2>Register</h2>
+        <form class="auth-form">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="firstname">First Name</label>
+                <input type="text" id="firstname" name="firstname" required>
+            </div>
+
+            <div class="form-group">
+                <label for="lastname">Last Name</label>
+                <input type="text" id="lastname" name="lastname" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">E-mail Address</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password"
+                    placeholder="Enter 8 character and first letter upper case" required>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm Password"
+                    required>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">Register</button>
+                <a href="#" class="btn-secondary">Login</a>
+            </div>
+        </form>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <h3>CONTACT US</h3>
+            <p class="design-credit">Design By PERFUME MALL PVT.LTD</p>
+        </div>
+        <div class="footer-bottom">
+            <div class="privacy-policy">Privacy Policy</div>
+            <div class="copyright">Copyright © 2026 Essence Elegance</div>
+            <div class="credit">Inspiro Theme by WPZOOM</div>
+        </div>
+    </footer>
+    <script src="register.js"></script>
+    <script src="auth-check.js"></script>
+</body>
+
+</html>
