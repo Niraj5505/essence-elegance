@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function loadCart(user) {
     try {
-        const response = await fetch(`http://localhost:5000/api/cart/${user.id || user._id}`);
+        const response = await fetch(`/api/cart/${user.id || user._id}`);
         // Cart might be empty or not created yet
         if (!response.ok) {
             // Handle error or empty
@@ -115,7 +115,7 @@ async function submitOrder(user) {
 
     // Re-fetch cart items to be safe (or store them globally)
     // For simplicity, let's fetch cart again
-    const cartResponse = await fetch(`http://localhost:5000/api/cart/${user.id || user._id}`);
+    const cartResponse = await fetch(`/api/cart/${user.id || user._id}`);
     const cart = await cartResponse.json();
 
     const orderItems = cart.items.map(item => ({
@@ -126,7 +126,7 @@ async function submitOrder(user) {
     }));
 
     try {
-        const response = await fetch('http://localhost:5000/api/orders', {
+        const response = await fetch('/api/orders', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -140,7 +140,7 @@ async function submitOrder(user) {
         if (response.ok) {
             alert('Order placed successfully!');
             // Clear Cart
-            await fetch(`http://localhost:5000/api/cart/${user.id || user._id}`, { method: 'DELETE' });
+            await fetch(`/api/cart/${user.id || user._id}`, { method: 'DELETE' });
             window.location.href = 'index.html'; // Redirect to home or orders page
         } else {
             alert('Failed to place order.');

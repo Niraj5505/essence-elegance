@@ -25,7 +25,7 @@ document.getElementById('product-form').addEventListener('submit', async (e) => 
     };
 
     try {
-        const response = await fetch('http://localhost:5000/api/products', {
+        const response = await fetch('/api/products', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -50,7 +50,7 @@ document.getElementById('product-form').addEventListener('submit', async (e) => 
 // User Management
 async function loadUsers() {
     try {
-        const response = await fetch('http://localhost:5000/api/users');
+        const response = await fetch('/api/users');
         const users = await response.json();
 
         const tbody = document.querySelector('#users-table tbody');
@@ -79,7 +79,7 @@ async function deleteUser(id) {
     if (!confirm('Are you sure you want to delete this user?')) return;
 
     try {
-        const response = await fetch(`http://localhost:5000/api/users/${id}`, {
+        const response = await fetch(`/api/users/${id}`, {
             method: 'DELETE'
         });
 
@@ -97,7 +97,7 @@ async function deleteUser(id) {
 // Order Management
 async function loadOrders() {
     try {
-        const response = await fetch('http://localhost:5000/api/orders');
+        const response = await fetch('/api/orders');
         const orders = await response.json();
 
         const tbody = document.querySelector('#orders-table tbody');
@@ -135,7 +135,7 @@ async function loadOrders() {
 
 async function updateOrderStatus(id, status) {
     try {
-        const response = await fetch(`http://localhost:5000/api/orders/${id}`, {
+        const response = await fetch(`/api/orders/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'

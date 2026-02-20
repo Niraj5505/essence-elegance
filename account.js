@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Load Profile
     try {
-        const profileRes = await fetch(`http://localhost:5000/api/users/${userId}`);
+        const profileRes = await fetch(`/api/users/${userId}`);
 
         if (!profileRes.ok) {
             throw new Error('Failed to fetch profile');
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Load Orders
     try {
-        const orderRes = await fetch(`http://localhost:5000/api/orders/user/${userId}`);
+        const orderRes = await fetch(`/api/orders/user/${userId}`);
         const orders = await orderRes.json();
 
         const ordersListDiv = document.getElementById('orders-list');

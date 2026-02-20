@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', async () => {
     // 1. Fetch Products from API
     try {
-        const response = await fetch('http://localhost:5000/api/products');
+        const response = await fetch('/api/products');
         const products = await response.json();
 
         const productGrid = document.querySelector('.product-grid');
@@ -53,7 +53,7 @@ async function addToCart(e) {
     const productId = e.target.getAttribute('data-id');
 
     try {
-        const response = await fetch('http://localhost:5000/api/cart/add', {
+        const response = await fetch('/api/cart/add', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
