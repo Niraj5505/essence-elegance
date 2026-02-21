@@ -22,7 +22,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     })
                 });
 
-                const data = await response.json();
+                let data;
+                const contentType = response.headers.get("content-type");
+                if (contentType && contentType.includes("application/json")) {
+                    data = await response.json();
+                } else {
+                    const text = await response.text();
+                    console.error("Non-JSON response received:", text);
+                    throw new Error("Server returned non-JSON response. Check console for details.");
+                }
 
                 if (response.ok) {
                     alert('Login successful!');
