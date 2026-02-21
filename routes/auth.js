@@ -32,7 +32,7 @@ router.post('/register', async (req, res) => {
         res.status(201).json({ msg: 'User registered successfully' });
     } catch (err) {
         console.error(err.message);
-        res.status(500).send('Server Error');
+        res.status(500).json({ msg: 'Server Error', error: err.message });
     }
 });
 
@@ -69,7 +69,7 @@ router.post('/login', async (req, res) => {
         res.json({ msg: 'Logged in successfully', user: { id: user.id, username: user.username, email: user.email } });
     } catch (err) {
         console.error(err.message);
-        res.status(500).send('Server Error');
+        res.status(500).json({ msg: 'Server Error', error: err.message });
     }
 });
 
@@ -91,7 +91,7 @@ router.put('/reset-password', async (req, res) => {
         res.json({ msg: 'Password updated successfully' });
     } catch (err) {
         console.error(err.message);
-        res.status(500).send('Server Error');
+        res.status(500).json({ msg: 'Server Error', error: err.message });
     }
 });
 
