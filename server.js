@@ -1,11 +1,4 @@
 require('dotenv').config();
-const dns = require('dns');
-try {
-    dns.setServers(['8.8.8.8', '8.8.4.4']); // Attempt to use Google DNS
-    console.log('Using Google DNS for resolution');
-} catch (e) {
-    console.log('Could not set custom DNS servers');
-}
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -21,9 +14,33 @@ app.use(bodyParser.json());
 // MongoDB Connection
 const MONGO_URI = process.env.MONGO_URI;
 
-mongoose.connect(MONGO_URI)
-    .then(() => console.log('MongoDB connected successfully'))
-    .catch(err => console.error('MongoDB connection error:', err));
+if (!MONGO_URI) {
+    console.warn('WARNING: MONGO_URI is not defined. Database features will fail.');
+}
+
+// Optimization for Vercel: Re-use connection
+let isConnected = false;
+const connectDB = async () => {
+    if (isConnected) return;
+    try {
+        await mongoose.connect(MONGO_URI);
+        isConnected = true;
+        console.log('MongoDB connected successfully');
+    } catch (err) {
+        console.error('MongoDB connection error:', err);
+    }
+};
+
+// Connect immediately (useful for local), but also on every request if needed
+connectDB();
+
+// Middleware to ensure DB is connected for API calls
+app.use(async (req, res, next) => {
+    if (!isConnected && MONGO_URI) {
+        await connectDB();
+    }
+    next();
+});
 
 // Routes
 const authRoutes = require('./routes/auth');
