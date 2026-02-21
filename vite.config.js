@@ -2,6 +2,15 @@ const { defineConfig } = require('vite');
 const { resolve } = require('path');
 
 module.exports = defineConfig({
+    server: {
+        proxy: {
+            '/api': {
+                target: 'http://localhost:5000',
+                changeOrigin: true,
+                secure: false,
+            }
+        }
+    },
     build: {
         rollupOptions: {
             input: {
