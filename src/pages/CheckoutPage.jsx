@@ -3,14 +3,16 @@ import { motion } from 'framer-motion';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, Navigate } from 'react-router-dom';
-import { ChevronRight, ShieldCheck, CreditCard, Truck, MapPin, Loader2 } from 'lucide-react';
+import { ChevronRight, ShieldCheck, CreditCard, Truck, MapPin, Loader2, Lock, Shield, CheckCircle2 } from 'lucide-react';
 import api from '../utils/api';
+import { AnimatePresence } from 'framer-motion';
 
 const CheckoutPage = () => {
     const { cart, clearCart } = useCart();
     const { user } = useAuth();
     const navigate = useNavigate();
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [paymentStep, setPaymentStep] = useState(0); // 0: Idle, 1: Connecting, 2: processing, 3: success
 
     const [formData, setFormData] = useState({
         street: '',
@@ -37,6 +39,7 @@ const CheckoutPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
+        setPaymentStep(1); // Connecting
 
         try {
             const orderData = {
@@ -55,26 +58,91 @@ const CheckoutPage = () => {
                     state: formData.state,
                     country: formData.country
                 },
-                paymentMethod: formData.formData,
+                paymentMethod: formData.paymentMethod,
                 paymentStatus: 'Pending'
             };
 
+            // Stage 1: Handshake
+            await new Promise(r => setTimeout(r, 2000));
+            setPaymentStep(2); // Processing
+
+            // Stage 2: Database & Clear
             await api.post('/orders', orderData);
+            await new Promise(r => setTimeout(r, 2500));
+
+            setPaymentStep(3); // Success Clear
             await clearCart();
 
             setTimeout(() => {
                 navigate('/checkout-success');
-            }, 1000);
+            }, 1500);
         } catch (error) {
             console.error("Order failed:", error);
+            setPaymentStep(0);
             alert("Payment gateway connection failed. Please try again.");
         } finally {
             setIsSubmitting(false);
         }
     };
 
+    const PaymentOverlay = () => (
+        <AnimatePresence>
+            {paymentStep > 0 && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="fixed inset-0 z-[100] bg-black/90 flex flex-col items-center justify-center text-white backdrop-blur-xl"
+                >
+                    <motion.div
+                        initial={{ scale: 0.9, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        className="flex flex-col items-center gap-12 max-w-sm text-center px-8"
+                    >
+                        <div className="relative">
+                            <motion.div
+                                animate={{ rotate: 360 }}
+                                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                                className="w-32 h-32 border border-white/10 rounded-full flex items-center justify-center"
+                            />
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                {paymentStep === 1 && <Lock className="w-8 h-8 text-white/40 animate-pulse" />}
+                                {paymentStep === 2 && <Shield className="w-8 h-8 text-zinc-100 animate-bounce" />}
+                                {paymentStep === 3 && <CheckCircle2 className="w-10 h-10 text-white" />}
+                            </div>
+                        </div>
+
+                        <div className="space-y-4">
+                            <motion.h2
+                                key={paymentStep}
+                                initial={{ y: 20, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                className="text-xl font-bold tracking-[0.3em] uppercase"
+                            >
+                                {paymentStep === 1 && "Connecting Vault"}
+                                {paymentStep === 2 && "Authorizing Payment"}
+                                {paymentStep === 3 && "Securely Finalized"}
+                            </motion.h2>
+                            <p className="text-[10px] text-zinc-400 tracking-widest uppercase italic font-light">
+                                {paymentStep === 1 && "Establishing encrypted link to banking servers..."}
+                                {paymentStep === 2 && "Verifying availability of funds and authenticity..."}
+                                {paymentStep === 3 && "Your order has been captured into our collection."}
+                            </p>
+                        </div>
+
+                        <div className="flex items-center gap-3 opacity-30">
+                            <ShieldCheck className="w-4 h-4" />
+                            <span className="text-[8px] tracking-[0.2em] font-bold uppercase">PCI DSS COMPLIANT / 256-BIT AES</span>
+                        </div>
+                    </motion.div>
+                </motion.div>
+            )}
+        </AnimatePresence>
+    );
+
     return (
         <div className="min-h-screen bg-white pt-32 pb-24 px-6 md:px-12 lg:px-24">
+            <PaymentOverlay />
             <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16">
 
                 {/* Left Column: Form */}
