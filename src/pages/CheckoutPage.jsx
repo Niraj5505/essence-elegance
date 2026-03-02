@@ -18,6 +18,7 @@ const CheckoutPage = () => {
         street: '',
         city: '',
         state: '',
+        zip: '',
         country: 'India',
         paymentMethod: 'Cash on Delivery',
         upiId: ''
