@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../context/CartContext';
-import { Trash2, Plus, Minus, Heart, Gift, ChevronRight, X, Clock, HelpCircle, ShieldCheck } from 'lucide-react';
+import { Trash2, Plus, Minus, Heart, Gift, ChevronRight, X, Clock, HelpCircle, ShieldCheck, Loader2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const CartPage = () => {
-    const { cart, loading, removeFromCart, updateQuantity, fetchCart } = useCart();
+    const { cart, loading, removeFromCart, updateQuantity, fetchCart, clearCart } = useCart();
     const [promoCode, setPromoCode] = useState('');
+    const [isCheckingOut, setIsCheckingOut] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchCart();
@@ -21,6 +24,21 @@ const CartPage = () => {
     const shipping = 0; // Standard shipping is FREE
     const tax = 0; // Simplified for this demo
     const total = subtotal + shipping + tax;
+
+    const onCheckout = async () => {
+        setIsCheckingOut(true);
+        try {
+            // Finalize the process
+            await clearCart();
+            setTimeout(() => {
+                navigate('/checkout-success');
+            }, 800);
+        } catch (error) {
+            console.error("Checkout failed:", error);
+        } finally {
+            setIsCheckingOut(false);
+        }
+    };
 
     if (loading && cart.length === 0) {
         return (
@@ -223,9 +241,22 @@ const CartPage = () => {
                                 <div className="flex-1 h-px bg-zinc-100" />
                             </div>
 
-                            <button className="w-full bg-black text-white py-5 text-[10px] tracking-[0.4em] font-bold uppercase overflow-hidden relative group">
-                                <span className="relative z-10">Proceed to Checkout</span>
-                                <div className="absolute inset-0 bg-zinc-800 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                            <button
+                                onClick={onCheckout}
+                                disabled={isCheckingOut}
+                                className="w-full bg-black text-white py-5 text-[10px] tracking-[0.4em] font-bold uppercase overflow-hidden relative group disabled:opacity-50"
+                            >
+                                <span className="relative z-10 flex items-center justify-center gap-2">
+                                    {isCheckingOut ? (
+                                        <>
+                                            <Loader2 className="w-3 h-3 animate-spin" />
+                                            Processing...
+                                        </>
+                                    ) : (
+                                        "Proceed to Checkout"
+                                    )}
+                                </span>
+                                {!isCheckingOut && <div className="absolute inset-0 bg-zinc-800 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />}
                             </button>
                         </div>
 

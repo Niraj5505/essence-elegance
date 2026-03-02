@@ -92,8 +92,19 @@ export const CartProvider = ({ children }) => {
         }
     };
 
+    const clearCart = async () => {
+        if (!user) return;
+        try {
+            const userId = user.id || user._id;
+            await api.delete(`/cart/${userId}`);
+            setCart([]);
+        } catch (error) {
+            console.error("Error clearing cart:", error);
+        }
+    };
+
     return (
-        <CartContext.Provider value={{ cart, loading, addToCart, removeFromCart, updateQuantity, fetchCart }}>
+        <CartContext.Provider value={{ cart, loading, addToCart, removeFromCart, updateQuantity, fetchCart, clearCart }}>
             {children}
         </CartContext.Provider>
     );
