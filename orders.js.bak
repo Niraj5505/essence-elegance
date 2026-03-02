@@ -1,0 +1,170 @@
+document.addEventListener('DOMContentLoaded', async () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    if (!user) {
+        alert('Please login to view your orders');
+        window.location.href = 'login.html';
+        return;
+    }
+
+    await loadOrders(user);
+    initPerfumeEffect();
+});
+
+function initPerfumeEffect() {
+    const container = document.getElementById('perfume-effect');
+    if (!container) return;
+
+    function createSparkle() {
+        const sparkle = document.createElement('div');
+        sparkle.classList.add('sparkle');
+
+        const left = Math.random() * 100;
+        const duration = 5 + Math.random() * 10;
+        const size = 2 + Math.random() * 4;
+
+        sparkle.style.left = `${left}%`;
+        sparkle.style.width = `${size}px`;
+        sparkle.style.height = `${size}px`;
+        sparkle.style.setProperty('--duration', `${duration}s`);
+
+        container.appendChild(sparkle);
+
+        setTimeout(() => {
+            sparkle.remove();
+        }, duration * 1000);
+    }
+
+    // Initial burst
+    for (let i = 0; i < 15; i++) {
+        setTimeout(createSparkle, Math.random() * 2000);
+    }
+
+    // Continuous generation
+    setInterval(createSparkle, 800);
+
+    // Periodic Spray Burst
+    setInterval(triggerPerfumeBurst, 4000);
+    setTimeout(triggerPerfumeBurst, 1000); // Initial spray
+}
+
+function triggerPerfumeBurst() {
+    const container = document.getElementById('perfume-effect');
+    if (!container) return;
+
+    for (let i = 0; i < 30; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('spray-particle');
+
+        // Randomize trajectory for "cone" effect
+        const angle = (Math.random() - 0.2) * (Math.PI / 4); // Spray mostly right and slightly down
+        const distance = 200 + Math.random() * 600;
+        const tx = Math.cos(angle) * distance;
+        const ty = Math.sin(angle) * distance;
+
+        const duration = 1.5 + Math.random() * 2;
+        const scale = 2 + Math.random() * 4;
+
+        particle.style.setProperty('--tx', `${tx}px`);
+        particle.style.setProperty('--ty', `${ty}px`);
+        particle.style.setProperty('--duration', `${duration}s`);
+        particle.style.setProperty('--scale', scale);
+
+        container.appendChild(particle);
+
+        setTimeout(() => particle.remove(), duration * 1000);
+    }
+}
+
+async function loadOrders(user) {
+    const ordersList = document.getElementById('orders-list');
+    const noOrdersMessage = document.getElementById('no-orders-message');
+
+    try {
+        const response = await fetch(`/api/orders/user/${user.id || user._id}`);
+
+        let data;
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+            data = await response.json();
+        } else {
+            throw new Error(`Server error (${response.status})`);
+        }
+
+        if (!response.ok) {
+            throw new Error(data.msg || data.message || 'Failed to fetch orders');
+        }
+
+        const orders = data;
+
+        if (!orders || orders.length === 0) {
+            ordersList.innerHTML = '';
+            noOrdersMessage.style.display = 'flex';
+            return;
+        }
+
+        noOrdersMessage.style.display = 'none';
+        ordersList.innerHTML = '';
+
+        orders.forEach(order => {
+            const orderDate = new Date(order.createdAt).toLocaleDateString(undefined, {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            const orderCard = document.createElement('div');
+            orderCard.classList.add('order-card');
+
+            // Generate items HTML
+            const itemsHtml = order.items.map(item => `
+                <div class="order-item">
+                    <span class="item-name">${item.name}</span>
+                    <span class="item-qty">x${item.quantity}</span>
+                    <span class="item-price">₹${(item.price * item.quantity).toFixed(2)}</span>
+                </div>
+            `).join('');
+
+            orderCard.innerHTML = `
+                <div class="order-header">
+                    <div class="order-info">
+                        <span class="order-number">Order #${order._id.slice(-8).toUpperCase()}</span>
+                        <span class="order-date">${orderDate}</span>
+                    </div>
+                    <div class="order-status status-${order.status.toLowerCase()}">
+                        ${order.status}
+                    </div>
+                </div>
+                <div class="order-body">
+                    <div class="order-items-list">
+                        ${itemsHtml}
+                    </div>
+                    <div class="order-shipping">
+                        <h5>Shipping Address</h5>
+                        <p>${order.shippingAddress.street}, ${order.shippingAddress.city}</p>
+                        <p>${order.shippingAddress.state}, ${order.shippingAddress.zip}</p>
+                        <p>${order.shippingAddress.country}</p>
+                    </div>
+                </div>
+                <div class="order-footer" style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: #fafafa; border-top: 1px solid #eee;">
+                    <div class="payment-info" style="font-size: 0.85rem; color: #666;">
+                        <span style="display: block;"><strong>Payment Method:</strong> ${order.paymentMethod || 'N/A'}</span>
+                        <span style="display: block;"><strong>Payment Status:</strong> <span class="status-${(order.paymentStatus || 'pending').toLowerCase()}">${order.paymentStatus || 'Pending'}</span></span>
+                    </div>
+                    <div style="text-align: right;">
+                        <span class="total-label">Total Amount</span>
+                        <span class="total-value" style="display: block;">₹${order.totalAmount.toFixed(2)}</span>
+                    </div>
+                </div>
+            `;
+            ordersList.appendChild(orderCard);
+        });
+
+    } catch (error) {
+        console.error('Error loading orders:', error);
+        ordersList.innerHTML = `<div class="error-container" style="text-align: center; padding: 2rem; background: #fff5f5; border: 1px solid #feb2b2; border-radius: 8px; margin: 2rem 0;">
+            <h4 style="color: #c53030; margin-bottom: 0.5rem;">Failed to load orders</h4>
+            <p style="color: #742a2a;">${error.message}</p>
+        </div>`;
+    }
+}

@@ -44,18 +44,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     const text = await response.text();
                     console.error("Non-JSON response:", text);
-                    throw new Error("Server returned non-JSON response.");
+                    throw new Error("Server returned non-JSON response. Make sure your backend server is running on port 5000.");
                 }
 
                 if (response.ok) {
                     alert('Registration successful! Redirecting to login...');
                     window.location.href = 'login.html';
                 } else {
-                    alert(data.msg || 'Registration failed');
+                    alert(data.msg || data.message || 'Registration failed');
                 }
             } catch (err) {
                 console.error('Error:', err);
-                alert('Server error. Please try again later. Make sure server is running on port 5000.');
+                alert(err.message || 'Server error. Please try again later.');
             }
         });
     }

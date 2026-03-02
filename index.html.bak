@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage - Essence Elegance</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <header class="site-header">
+        <a href="index.html" class="logo">ESSENCE ELEGANCE</a>
+        <nav>
+            <a href="register.html">Register</a>
+            <a href="login.html">Login</a>
+            <a href="shop.html">Shop</a>
+            <div class="dropdown">
+                <a href="cart.html">Cart <i class="fas fa-chevron-down"></i></a>
+            </div>
+            <div class="dropdown">
+                <a href="#">My account <i class="fas fa-chevron-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="reset-password.html">Password Reset</a>
+                    <a href="account.html">Account</a>
+                    <a href="#">Privacy Policy</a>
+                </div>
+            </div>
+            <a href="orders.html">Orders</a>
+            <a href="#" class="search-icon"><i class="fas fa-search"></i></a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section with Parallax -->
+        <section class="hero parallax-hero">
+            <div class="hero-content reveal">
+                <h1>FRAGRANCES</h1>
+                <p>THE FEEL-GOOD SCENTS THAT YOU FEEL A PERSONAL CONNECTION TO.</p>
+                <div class="hero-buttons">
+                    <a href="shop.html" class="btn-explore">EXPLORE COLLECTION</a>
+                </div>
+            </div>
+            <div class="scroll-indicator">
+                <span>SCROLL TO DISCOVER</span>
+                <div class="line"></div>
+            </div>
+        </section>
+
+        <!-- Signature Collection Section -->
+        <section class="signature-section reveal">
+            <div class="section-header">
+                <span class="subtitle">EST. 2026</span>
+                <h2>SIGNATURE ESSENCES</h2>
+            </div>
+            <div class="signature-grid">
+                <div class="sig-item">
+                    <div class="sig-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1594035910387-fea47794261f?q=80&w=2670"
+                            alt="Mystic Oud">
+                    </div>
+                    <div class="sig-details">
+                        <h3>MYSTIC OUD</h3>
+                        <p>A deep, velvety journey through nocturnal gardens.</p>
+                        <a href="shop.html" class="btn-link">DISCOVER</a>
+                    </div>
+                </div>
+                <div class="sig-item">
+                    <div class="sig-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?q=80&w=2504"
+                            alt="Royal Citrus">
+                    </div>
+                    <div class="sig-details">
+                        <h3>ROYAL CITRUS</h3>
+                        <p>Brilliant bergamot paired with vintage sandalwood.</p>
+                        <a href="shop.html" class="btn-link">DISCOVER</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Philosophy Section with Full Width Image -->
+        <section class="philosophy-section">
+            <div class="parallax-bg"
+                style="background-image: url('https://images.unsplash.com/photo-1615485242271-9ec751699763?q=80&w=2574')">
+            </div>
+            <div class="philosophy-content reveal">
+                <h2>THE CRAFT OF ELEGANCE</h2>
+                <p>WE BELIEVE THAT A SCENT IS NOT JUST A FRAGRANCE; IT IS AN INVISIBLE GARMENT THAT DEFINES YOUR
+                    PRESENCE. OUR ESSENCES ARE BOTTLED POETRY.</p>
+                <a href="shop.html" class="btn-primary" style="background: transparent; border: 1px solid #fff;">READ
+                    OUR STORY</a>
+            </div>
+        </section>
+
+        <!-- Perfume Information: The Olfactory Journey -->
+        <section class="info-section reveal">
+            <div class="section-header">
+                <span class="subtitle">LEARN THE ART</span>
+                <h2>THE OLFACTORY JOURNEY</h2>
+            </div>
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-img">
+                        <img src="https://images.unsplash.com/photo-1495107333309-f0675bc1559d?q=80&w=2670"
+                            alt="Top Notes">
+                    </div>
+                    <div class="info-text">
+                        <h3>TOP NOTES</h3>
+                        <p>The initial burst of fragrance. These are light, volatile molecules that last for the first
+                            15 minutes. Citrus, ginger, and light florals define this awakening.</p>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <div class="info-img">
+                        <img src="https://images.unsplash.com/photo-1595113330231-5367549b8ded?q=80&w=2670"
+                            alt="Heart Notes">
+                    </div>
+                    <div class="info-text">
+                        <h3>HEART NOTES</h3>
+                        <p>The "soul" of the perfume. Emerging as top notes fade, these form the core of the fragrance
+                            for up to 4 hours. Lavender, rose, and spices are common heart elements.</p>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <div class="info-img">
+                        <img src="https://images.unsplash.com/photo-1516513809416-68a99cc32883?q=80&w=2670"
+                            alt="Base Notes">
+                    </div>
+                    <div class="info-text">
+                        <h3>BASE NOTES</h3>
+                        <p>The final, enduring impression. These rich, heavy molecules provide depth and fix the
+                            fragrance for 8+ hours. Think sandalwood, vanilla, musk, and oud.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scent Families Showcase -->
+        <section class="families-section reveal">
+            <div class="families-container">
+                <div class="family-item">
+                    <img src="https://images.unsplash.com/photo-1490263321932-907986872714?q=80&w=2670" alt="Floral">
+                    <div class="family-overlay">
+                        <h3>FLORAL</h3>
+                        <p>Romantic and timeless notes of blooming jasmine and rare tuberose.</p>
+                    </div>
+                </div>
+                <div class="family-item">
+                    <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2574" alt="Woody">
+                    <div class="family-overlay">
+                        <h3>WOODY</h3>
+                        <p>Earthy echoes of aged cedarwood and smoky vetiver.</p>
+                    </div>
+                </div>
+                <div class="family-item">
+                    <img src="https://images.unsplash.com/photo-1502472545331-db676906a287?q=80&w=2670" alt="Fresh">
+                    <div class="family-overlay">
+                        <h3>FRESH</h3>
+                        <p>Zesty bergamot and crisp sea breezes of the Mediterranean.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter / Join Section -->
+        <section class="join-section reveal">
+            <div class="join-container">
+                <h2>JOIN THE ELITE</h2>
+                <p>Subscribe to receive early access to new releases and private events.</p>
+                <form class="join-form">
+                    <input type="email" placeholder="Your E-mail Address">
+                    <button type="submit">SUBSCRIBE</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p class="design-credit">Design By PERFUME MALL PVT.LTD</p>
+        </div>
+    </footer>
+    <script type="module" src="auth-check.js"></script>
+    <script src="luxury-effects.js"></script>
+</body>
+
+</html>

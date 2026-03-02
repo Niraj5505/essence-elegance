@@ -14,11 +14,15 @@ router.post('/register', async (req, res) => {
             return res.status(400).json({ msg: 'User already exists' });
         }
 
+        const [first, ...rest] = (username || '').split(' ');
+        const parsedFirstName = firstname || first || 'User';
+        const parsedLastName = lastname || rest.join(' ') || 'Name';
+
         // Create new user
         user = new User({
-            username,
-            firstName: firstname,
-            lastName: lastname,
+            username: username || email,
+            firstName: parsedFirstName,
+            lastName: parsedLastName,
             email,
             password
         });
@@ -45,6 +49,7 @@ router.post('/login', async (req, res) => {
         if (email === 'admin@gmail.com' && password === '123456') {
             return res.json({
                 msg: 'Logged in successfully',
+                token: 'mock-jwt-token-admin',
                 user: {
                     id: 'admin_id',
                     username: 'Admin',
@@ -66,7 +71,11 @@ router.post('/login', async (req, res) => {
             return res.status(400).json({ msg: 'Invalid Credentials' });
         }
 
-        res.json({ msg: 'Logged in successfully', user: { id: user.id, username: user.username, email: user.email } });
+        res.json({
+            msg: 'Logged in successfully',
+            token: 'mock-jwt-token',
+            user: { id: user.id, username: user.username, email: user.email }
+        });
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ msg: 'Server Error', error: err.message });

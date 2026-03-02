@@ -12,30 +12,48 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         const profileRes = await fetch(`/api/users/${userId}`);
 
-        if (!profileRes.ok) {
-            throw new Error('Failed to fetch profile');
+        let profileData;
+        const contentType = profileRes.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+            profileData = await profileRes.json();
+        } else {
+            const text = await profileRes.text();
+            throw new Error(`Server error (${profileRes.status})`);
         }
 
-        const profileData = await profileRes.json();
+        if (!profileRes.ok) {
+            throw new Error(profileData.msg || profileData.message || 'Failed to fetch profile');
+        }
 
         if (profileData) {
             const profileInfoDiv = document.getElementById('profile-info');
             profileInfoDiv.innerHTML = `
-                <h3>${profileData.username}</h3>
-                <p><strong>Name:</strong> ${profileData.firstName} ${profileData.lastName}</p>
-                <p><strong>Email:</strong> ${profileData.email}</p>
-                <p><strong>Joined:</strong> ${new Date(profileData.createdAt).toLocaleDateString()}</p>
+                <h3>${profileData.username || 'User'}</h3>
+                <p><strong>Name:</strong> ${profileData.firstName || ''} ${profileData.lastName || ''}</p>
+                <p><strong>Email:</strong> ${profileData.email || ''}</p>
+                <p><strong>Joined:</strong> ${profileData.createdAt ? new Date(profileData.createdAt).toLocaleDateString() : 'N/A'}</p>
             `;
         }
     } catch (err) {
         console.error('Error loading profile:', err);
-        document.getElementById('profile-info').innerHTML = '<p style="color:red">Error loading profile data.</p>';
+        document.getElementById('profile-info').innerHTML = `<p style="color:red; background:#fff5f5; padding:10px; border-radius:4px; border:1px solid #feb2b2;">${err.message}</p>`;
     }
 
     // Load Orders
     try {
         const orderRes = await fetch(`/api/orders/user/${userId}`);
-        const orders = await orderRes.json();
+
+        let orders;
+        const contentType = orderRes.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+            orders = await orderRes.json();
+        } else {
+            throw new Error(`Server error (${orderRes.status})`);
+        }
+
+        if (!orderRes.ok) {
+            throw new Error(orders.msg || orders.message || 'Failed to fetch orders');
+        }
 
         const ordersListDiv = document.getElementById('orders-list');
         ordersListDiv.innerHTML = '';

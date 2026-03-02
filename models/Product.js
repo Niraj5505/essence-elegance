@@ -30,6 +30,18 @@ const ProductSchema = new mongoose.Schema({
     stock: {
         type: Number,
         default: 10
+    },
+    // Premium Fragrance Details
+    topNotes: [String],
+    heartNotes: [String],
+    baseNotes: [String],
+    scentFamily: {
+        type: String,
+        default: 'Floral'
+    },
+    longevity: {
+        type: String,
+        default: '6-8 Hours'
     }
 }, { timestamps: true });
 

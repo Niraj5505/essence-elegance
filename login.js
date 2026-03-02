@@ -29,7 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     const text = await response.text();
                     console.error("Non-JSON response received:", text);
-                    throw new Error("Server returned non-JSON response. Check console for details.");
+                    console.error("Status:", response.status, response.statusText);
+                    throw new Error(`Server returned non-JSON response (${response.status}). Please check console for details.`);
                 }
 
                 if (response.ok) {

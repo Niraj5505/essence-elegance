@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - Essence Elegance</title>
+    <title>Login - Essence Elegance</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,59 +16,49 @@
     <header class="site-header">
         <a href="index.html" class="logo">ESSENCE ELEGANCE</a>
         <nav>
-            <a href="register.html" class="active">Register</a>
-            <a href="#">Login</a>
-            <a href="#">Shop</a>
+            <a href="register.html">Register</a>
+            <a href="login.html" class="active">Login</a>
+            <a href="shop.html">Shop</a>
             <div class="dropdown">
-                <a href="#">Cart <i class="fas fa-chevron-down"></i></a>
+                <a href="cart.html">Cart <i class="fas fa-chevron-down"></i></a>
             </div>
             <div class="dropdown">
                 <a href="#">My account <i class="fas fa-chevron-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="reset-password.html">Password Reset</a>
+                    <a href="account.html">Account</a>
+                    <a href="#">Privacy Policy</a>
+                </div>
             </div>
-            <a href="#">Orders</a>
+            <a href="orders.html">Orders</a>
             <a href="#" class="search-icon"><i class="fas fa-search"></i></a>
         </nav>
     </header>
 
     <main class="auth-container">
-        <h2>Register</h2>
+        <h2>Login</h2>
         <form class="auth-form">
             <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-
-            <div class="form-group">
-                <label for="firstname">First Name</label>
-                <input type="text" id="firstname" name="firstname" required>
-            </div>
-
-            <div class="form-group">
-                <label for="lastname">Last Name</label>
-                <input type="text" id="lastname" name="lastname" required>
-            </div>
-
-            <div class="form-group">
-                <label for="email">E-mail Address</label>
+                <label for="email">E-mail</label>
                 <input type="email" id="email" name="email" required>
             </div>
 
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password"
-                    placeholder="Enter 8 character and first letter upper case" required>
+                <input type="password" id="password" name="password" required>
             </div>
 
-            <div class="form-group">
-                <label for="confirm-password">Confirm Password</label>
-                <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm Password"
-                    required>
+            <div class="form-check">
+                <input type="checkbox" id="keep-signed-in" name="keep-signed-in">
+                <label for="keep-signed-in">Keep me signed in</label>
             </div>
 
-            <div class="form-actions">
-                <button type="submit" class="btn-primary">Register</button>
-                <a href="#" class="btn-secondary">Login</a>
+            <div class="form-actions login-actions">
+                <button type="submit" class="btn-primary">Login</button>
+                <a href="register.html" class="btn-secondary">Register</a>
             </div>
+
+            <a href="#" class="forgot-password">Forgot your password?</a>
         </form>
     </main>
 
@@ -83,8 +73,9 @@
             <div class="credit">Inspiro Theme by WPZOOM</div>
         </div>
     </footer>
-    <script type="module" src="register.js"></script>
+    <script type="module" src="login.js"></script>
     <script type="module" src="auth-check.js"></script>
+    <script src="luxury-effects.js"></script>
 </body>
 
 </html>

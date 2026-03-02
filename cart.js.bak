@@ -19,25 +19,117 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
+    // Handle Payment Method Selection
+    const paymentOptions = document.querySelectorAll('input[name="paymentMethod"]');
+    paymentOptions.forEach(option => {
+        option.addEventListener('change', (e) => {
+            const cardDetails = document.getElementById('card-details');
+            if (e.target.value === 'Credit Card') {
+                cardDetails.style.display = 'block';
+            } else {
+                cardDetails.style.display = 'none';
+            }
+        });
+    });
+
     // Handle Order Submission
     const orderForm = document.getElementById('order-form');
     if (orderForm) {
         orderForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            await submitOrder(user);
+            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+
+            if (paymentMethod === 'Cash on Delivery') {
+                await submitOrder(user, paymentMethod, 'Pending');
+            } else {
+                // Show Payment Processing UI
+                showPaymentModal();
+
+                // Simulate Payment Delay
+                setTimeout(async () => {
+                    hidePaymentModal();
+                    await submitOrder(user, paymentMethod, 'Paid');
+                }, 3000);
+            }
         });
     }
 });
 
+function showPaymentModal() {
+    let modal = document.getElementById('payment-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'payment-modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <div class="spinner"></div>
+                <h2>Processing Payment</h2>
+                <p>Please do not refresh the page or click back.</p>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        // Add styles if not present
+        const style = document.createElement('style');
+        style.textContent = `
+            #payment-modal {
+                display: flex;
+                position: fixed;
+                top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(0, 0, 0, 0.7);
+                z-index: 10000;
+                justify-content: center;
+                align-items: center;
+                backdrop-filter: blur(5px);
+                color: #333;
+            }
+            .modal-content {
+                background: white;
+                padding: 3rem;
+                border-radius: 20px;
+                text-align: center;
+                max-width: 450px;
+                width: 90%;
+                box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            }
+            .spinner {
+                width: 60px;
+                height: 60px;
+                border: 6px solid #f3f3f3;
+                border-top: 6px solid #3498db;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+                margin: 0 auto 2rem;
+            }
+            @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+            .modal-content h2 { margin-bottom: 1rem; font-weight: 600; }
+            .modal-content p { color: #666; font-size: 0.95rem; }
+        `;
+        document.head.appendChild(style);
+    }
+    modal.style.display = 'flex';
+}
+
+function hidePaymentModal() {
+    const modal = document.getElementById('payment-modal');
+    if (modal) modal.style.display = 'none';
+}
+
 async function loadCart(user) {
     try {
         const response = await fetch(`/api/cart/${user.id || user._id}`);
-        // Cart might be empty or not created yet
-        if (!response.ok) {
-            // Handle error or empty
+
+        let cart;
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+            cart = await response.json();
+        } else {
+            throw new Error(`Server error (${response.status})`);
         }
 
-        const cart = await response.json();
+        if (!response.ok) {
+            throw new Error(cart.msg || cart.message || 'Failed to load cart');
+        }
         const cartContainer = document.querySelector('.cart-container');
         const cartItemsDiv = document.querySelector('.cart-items');
         const emptyMessage = document.querySelector('.cart-empty-message');
@@ -87,6 +179,10 @@ async function loadCart(user) {
 
     } catch (error) {
         console.error('Error loading cart:', error);
+        const cartItemsDiv = document.querySelector('.cart-items');
+        if (cartItemsDiv) {
+            cartItemsDiv.innerHTML = `<p style="color:red; background:#fff5f5; padding:20px; border-radius:8px; border:1px solid #feb2b2;">${error.message}</p>`;
+        }
     }
 }
 
@@ -102,7 +198,7 @@ async function removeFromCart(productId) {
     alert('Remove functionality not fully implemented yet.');
 }
 
-async function submitOrder(user) {
+async function submitOrder(user, paymentMethod = 'Cash on Delivery', paymentStatus = 'Pending') {
     const shippingAddress = {
         street: document.getElementById('street').value,
         city: document.getElementById('city').value,
@@ -116,7 +212,16 @@ async function submitOrder(user) {
     // Re-fetch cart items to be safe (or store them globally)
     // For simplicity, let's fetch cart again
     const cartResponse = await fetch(`/api/cart/${user.id || user._id}`);
-    const cart = await cartResponse.json();
+
+    let cart;
+    if (cartResponse.headers.get("content-type")?.includes("application/json")) {
+        cart = await cartResponse.json();
+    }
+
+    if (!cartResponse.ok || !cart) {
+        alert('Could not retrieve cart data: ' + (cart?.msg || 'Server error'));
+        return;
+    }
 
     const orderItems = cart.items.map(item => ({
         product: item.product._id,
@@ -133,7 +238,9 @@ async function submitOrder(user) {
                 user: user.id || user._id,
                 items: orderItems,
                 totalAmount: totalAmount,
-                shippingAddress: shippingAddress
+                shippingAddress: shippingAddress,
+                paymentMethod: paymentMethod,
+                paymentStatus: paymentStatus
             })
         });
 
@@ -141,7 +248,7 @@ async function submitOrder(user) {
             alert('Order placed successfully!');
             // Clear Cart
             await fetch(`/api/cart/${user.id || user._id}`, { method: 'DELETE' });
-            window.location.href = 'index.html'; // Redirect to home or orders page
+            window.location.href = 'orders.html'; // Redirect to orders page
         } else {
             alert('Failed to place order.');
         }

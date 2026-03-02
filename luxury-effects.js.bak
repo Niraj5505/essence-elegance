@@ -1,0 +1,220 @@
+document.addEventListener('DOMContentLoaded', () => {
+    initPerfumeFilling();
+    initCustomCursor();
+    initScrollReveal();
+    initPageTransitions();
+    initParallax();
+});
+
+function initParallax() {
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+
+        // Hero Content Parallax
+        const heroContent = document.querySelector('.hero-content');
+        if (heroContent) {
+            heroContent.style.transform = `translateY(${scrolled * 0.3}px)`;
+            heroContent.style.opacity = 1 - (scrolled / 800);
+        }
+
+        // Philosophy Background Parallax
+        const parallaxBg = document.querySelector('.parallax-bg');
+        if (parallaxBg) {
+            const parent = parallaxBg.parentElement;
+            const offsetTop = parent.offsetTop;
+            const parentHeight = parent.offsetHeight;
+            const windowHeight = window.innerHeight;
+
+            if (scrolled + windowHeight > offsetTop && scrolled < offsetTop + parentHeight) {
+                const relativeScroll = scrolled - offsetTop;
+                parallaxBg.style.transform = `translateY(${relativeScroll * 0.15}px)`;
+            }
+        }
+    });
+}
+
+function initPerfumeFilling() {
+    // Only run on the first page load of the session
+    if (sessionStorage.getItem('perfumeIntroDone')) return;
+
+    const overlay = document.createElement('div');
+    overlay.className = 'perfume-fill-overlay';
+
+    const liquid = document.createElement('div');
+    liquid.className = 'perfume-liquid';
+
+    const text = document.createElement('div');
+    text.className = 'perfume-reveal-text';
+    text.innerText = 'ESSENCE ELEGANCE';
+
+    overlay.appendChild(liquid);
+    overlay.appendChild(text);
+    document.body.appendChild(overlay);
+
+    // Trigger filling animation
+    setTimeout(() => {
+        liquid.style.height = '100%';
+        document.body.classList.add('intro-active');
+    }, 100);
+
+    // Create bubbles during filling
+    const bubbleInterval = setInterval(() => {
+        const bubble = document.createElement('div');
+        bubble.className = 'filling-bubble';
+        bubble.style.left = Math.random() * 100 + '%';
+        const size = 10 + Math.random() * 30;
+        bubble.style.width = size + 'px';
+        bubble.style.height = size + 'px';
+        overlay.appendChild(bubble);
+        setTimeout(() => bubble.remove(), 3000);
+    }, 150);
+
+    // Fade out and remove
+    setTimeout(() => {
+        clearInterval(bubbleInterval);
+        overlay.style.transition = 'opacity 1.5s ease';
+        overlay.style.opacity = '0';
+        document.body.classList.remove('intro-active');
+
+        setTimeout(() => {
+            overlay.remove();
+            sessionStorage.setItem('perfumeIntroDone', 'true');
+        }, 1500);
+    }, 4500);
+}
+
+function initCustomCursor() {
+    if (window.innerWidth < 1024) return; // Disable on mobile
+
+    const cursor = document.createElement('div');
+    const outline = document.createElement('div');
+    cursor.className = 'custom-cursor';
+    outline.className = 'custom-cursor-outline';
+    document.body.appendChild(cursor);
+    document.body.appendChild(outline);
+
+    let mouseX = 0;
+    let mouseY = 0;
+    let cursorX = 0;
+    let cursorY = 0;
+    let outlineX = 0;
+    let outlineY = 0;
+
+    window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+
+        cursor.style.left = mouseX - 5 + 'px';
+        cursor.style.top = mouseY - 5 + 'px';
+    });
+
+    // Smooth outline following
+    function animateOutline() {
+        const distX = mouseX - outlineX;
+        const distY = mouseY - outlineY;
+
+        outlineX = outlineX + distX * 0.15;
+        outlineY = outlineY + distY * 0.15;
+
+        outline.style.left = outlineX - 20 + 'px';
+        outline.style.top = outlineY - 20 + 'px';
+
+        requestAnimationFrame(animateOutline);
+    }
+    animateOutline();
+
+    // Hover effects
+    const interactiveElements = document.querySelectorAll('a, button, .payment-option, .dropdown, input, select');
+    interactiveElements.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            cursor.classList.add('cursor-hover');
+            outline.classList.add('cursor-outline-hover');
+        });
+        el.addEventListener('mouseleave', () => {
+            cursor.classList.remove('cursor-hover');
+            outline.classList.remove('cursor-outline-hover');
+        });
+    });
+
+    // Essence Trail
+    setInterval(() => {
+        if (Math.abs(mouseX - cursorX) > 2 || Math.abs(mouseY - cursorY) > 2) {
+            createEssenceParticle(mouseX, mouseY);
+            cursorX = mouseX;
+            cursorY = mouseY;
+        }
+    }, 50);
+}
+
+function createEssenceParticle(x, y) {
+    const particle = document.createElement('div');
+    particle.className = 'sparkle';
+    particle.style.left = x + (Math.random() - 0.5) * 10 + 'px';
+    particle.style.top = y + (Math.random() - 0.5) * 10 + 'px';
+    particle.style.setProperty('--duration', '1.5s');
+    particle.style.width = '3px';
+    particle.style.height = '3px';
+    particle.style.background = 'var(--accent-color)';
+    particle.style.position = 'fixed';
+    particle.style.zIndex = '9998';
+
+    document.body.appendChild(particle);
+
+    const animation = particle.animate([
+        { transform: 'translateY(0) scale(1)', opacity: 0.8 },
+        { transform: `translateY(${Math.random() * 50}px) scale(0)`, opacity: 0 }
+    ], {
+        duration: 1500,
+        easing: 'ease-out'
+    });
+
+    animation.onfinish = () => particle.remove();
+}
+
+function initScrollReveal() {
+    const observerOptions = {
+        threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    }, observerOptions);
+
+    // Initial reveal elements
+    const elementsToReveal = document.querySelectorAll('.product-card, .cart-item, .order-card, .auth-form, h1, h2');
+    elementsToReveal.forEach(el => {
+        el.classList.add('reveal');
+        observer.observe(el);
+    });
+}
+
+function initPageTransitions() {
+    const overlay = document.createElement('div');
+    overlay.className = 'page-transition';
+    document.body.appendChild(overlay);
+
+    // Initial fade in
+    setTimeout(() => {
+        overlay.style.transform = 'translateY(-100%)';
+    }, 100);
+
+    // Intercept clicks on links
+    document.querySelectorAll('a').forEach(link => {
+        if (link.hostname === window.location.hostname && !link.hash && !link.target) {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = link.href;
+
+                overlay.style.transform = 'translateY(0)';
+
+                setTimeout(() => {
+                    window.location.href = target;
+                }, 600);
+            });
+        }
+    });
+}

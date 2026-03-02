@@ -43,13 +43,15 @@ router.put('/:id', async (req, res) => {
 // Create new order
 router.post('/', async (req, res) => {
     try {
-        const { user, items, totalAmount, shippingAddress } = req.body;
+        const { user, items, totalAmount, shippingAddress, paymentMethod, paymentStatus } = req.body;
 
         const newOrder = new Order({
             user,
             items,
             totalAmount,
-            shippingAddress
+            shippingAddress,
+            paymentMethod,
+            paymentStatus
         });
 
         const savedOrder = await newOrder.save();

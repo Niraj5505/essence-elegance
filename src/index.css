@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+@theme {
+    --color-primary: #1a1a1a;
+    --color-gold: #c5a059;
+    --font-sans: "Outfit", sans-serif;
+    --font-serif: "Playfair Display", serif;
+}
+
+@layer base {
+    body {
+        @apply bg-zinc-50 text-zinc-900 font-sans;
+    }
+}
+
+@layer components {
+    .btn-premium {
+        @apply relative overflow-hidden transition-all duration-300 px-6 py-2.5 border border-zinc-900 hover:bg-zinc-900 hover:text-white text-sm tracking-widest uppercase font-medium;
+    }
+
+    .glass {
+        @apply bg-white/20 backdrop-blur-lg border border-white/30;
+    }
+
+    .premium-gradient {
+        @apply bg-gradient-to-tr from-[#1a1c2c] to-[#4a192c];
+    }
+
+    .perspective-1000 {
+        perspective: 1000px;
+    }
+
+    .backface-hidden {
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+    }
+}
+
+@keyframes reveal {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.reveal {
+    animation: reveal 1s ease forwards;
+}
+
+/* Flip Card System */
+.flip {
+    position: relative;
+    perspective: 1200px;
+}
+
+.flip .front,
+.flip .back {
+    display: block;
+    width: 100%;
+    height: 100%;
+    transition-timing-function: cubic-bezier(.175, .885, .32, 1.275);
+    transition-duration: .8s;
+    transition-property: transform, opacity;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.flip .front {
+    transform: rotateY(0deg);
+    z-index: 2;
+}
+
+.flip .back {
+    position: absolute;
+    opacity: 0;
+    top: 0px;
+    left: 0px;
+    transform: rotateY(-180deg);
+    background: #0d0d0d;
+    color: white;
+    z-index: 1;
+}
+
+.flip:hover .front {
+    transform: rotateY(180deg);
+}
+
+.flip:hover .back {
+    opacity: 1;
+    transform: rotateY(0deg);
+    z-index: 2;
+}
+
+.flip-vertical .back {
+    transform: rotateX(-180deg);
+}
+
+.flip-vertical:hover .front {
+    transform: rotateX(180deg);
+}
+
+.flip-vertical:hover .back {
+    transform: rotateX(0deg);
+}
+
+.text-shadow-premium {
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}

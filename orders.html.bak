@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Essence Elegance</title>
+    <title>My Orders - Essence Elegance</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,7 +17,7 @@
         <a href="index.html" class="logo">ESSENCE ELEGANCE</a>
         <nav>
             <a href="register.html">Register</a>
-            <a href="login.html" class="active">Login</a>
+            <a href="login.html">Login</a>
             <a href="shop.html">Shop</a>
             <div class="dropdown">
                 <a href="cart.html">Cart <i class="fas fa-chevron-down"></i></a>
@@ -25,56 +25,53 @@
             <div class="dropdown">
                 <a href="#">My account <i class="fas fa-chevron-down"></i></a>
                 <div class="dropdown-content">
-                    <a href="#">Password Reset</a>
-                    <a href="#">Account</a>
+                    <a href="reset-password.html">Password Reset</a>
+                    <a href="account.html">Account</a>
                     <a href="#">Privacy Policy</a>
                 </div>
             </div>
-            <a href="#">Orders</a>
+            <a href="orders.html" class="active">Orders</a>
             <a href="#" class="search-icon"><i class="fas fa-search"></i></a>
         </nav>
     </header>
 
-    <main class="auth-container">
-        <h2>Login</h2>
-        <form class="auth-form">
-            <div class="form-group">
-                <label for="email">E-mail</label>
-                <input type="email" id="email" name="email" required>
+    <main class="orders-container">
+        <!-- Perfume Effect Background -->
+        <div class="perfume-mist-container" id="perfume-effect">
+            <div class="spray-nozzle" id="nozzle"></div>
+            <div class="mist-cloud" style="top: 10%; left: 10%; width: 300px; height: 300px;"></div>
+            <div class="mist-cloud" style="top: 50%; right: 10%; width: 400px; height: 400px; animation-delay: -5s;">
             </div>
-
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
+            <div class="mist-cloud" style="bottom: 10%; left: 20%; width: 350px; height: 350px; animation-delay: -10s;">
             </div>
+        </div>
+        <h1>My Orders</h1>
 
-            <div class="form-check">
-                <input type="checkbox" id="keep-signed-in" name="keep-signed-in">
-                <label for="keep-signed-in">Keep me signed in</label>
+        <!-- No Orders Message -->
+        <div id="no-orders-message" class="cart-empty-message" style="display: none;">
+            <i class="fas fa-box-open"></i>
+            <p>You haven't placed any orders yet.</p>
+            <a href="shop.html" class="btn-return-shop">START SHOPPING</a>
+        </div>
+
+        <!-- Orders List -->
+        <div id="orders-list" class="orders-list">
+            <!-- Orders injected by JS -->
+            <div class="loading-spinner">
+                <i class="fas fa-circle-notch fa-spin"></i> Loading your orders...
             </div>
-
-            <div class="form-actions login-actions">
-                <button type="submit" class="btn-primary">Login</button>
-                <a href="register.html" class="btn-secondary">Register</a>
-            </div>
-
-            <a href="#" class="forgot-password">Forgot your password?</a>
-        </form>
+        </div>
     </main>
 
     <footer class="site-footer">
         <div class="footer-content">
-            <h3>CONTACT US</h3>
             <p class="design-credit">Design By PERFUME MALL PVT.LTD</p>
         </div>
-        <div class="footer-bottom">
-            <div class="privacy-policy">Privacy Policy</div>
-            <div class="copyright">Copyright © 2026 Essence Elegance</div>
-            <div class="credit">Inspiro Theme by WPZOOM</div>
-        </div>
     </footer>
-    <script type="module" src="login.js"></script>
+
     <script type="module" src="auth-check.js"></script>
+    <script type="module" src="orders.js"></script>
+    <script src="luxury-effects.js"></script>
 </body>
 
 </html>

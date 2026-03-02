@@ -30,7 +30,7 @@
                     <a href="#">Privacy Policy</a>
                 </div>
             </div>
-            <a href="#">Orders</a>
+            <a href="orders.html">Orders</a>
             <a href="#" class="search-icon"><i class="fas fa-search"></i></a>
         </nav>
     </header>
@@ -101,6 +101,7 @@
     </footer>
     <script type="module" src="auth-check.js"></script>
     <script type="module" src="shop.js"></script>
+    <script src="luxury-effects.js"></script>
 </body>
 
 </html>

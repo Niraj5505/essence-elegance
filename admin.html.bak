@@ -149,6 +149,27 @@
             border: none;
             border-radius: 4px;
         }
+
+        /* Override global cursor: none for admin board */
+        @media (min-width: 1024px) {
+
+            body,
+            a,
+            button,
+            input,
+            select,
+            textarea,
+            .dropdown {
+                cursor: auto !important;
+            }
+
+            a,
+            button,
+            select,
+            .action-btn {
+                cursor: pointer !important;
+            }
+        }
     </style>
 </head>
 
@@ -180,8 +201,28 @@
 
         <!-- Products Tab -->
         <div id="products" class="tab-content active">
-            <h2>Add New Product</h2>
+            <h2>Product List</h2>
+            <div style="overflow-x: auto; margin-bottom: 3rem;">
+                <table id="products-table">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Products will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <h2 id="product-form-title">Add New Product</h2>
             <form id="product-form" class="auth-form" style="margin-bottom: 3rem;">
+                <input type="hidden" id="product_id" name="product_id">
                 <div class="form-grid">
                     <div class="form-group full-width">
                         <label for="name">Product Name *</label>
@@ -207,8 +248,11 @@
                     </div>
 
                     <div class="form-group full-width">
-                        <label for="image">Image URL *</label>
-                        <input type="url" id="image" name="image" required placeholder="https://example.com/image.jpg">
+                        <label for="image">Image URL or Upload File *</label>
+                        <input type="file" id="imageFile" accept="image/*"
+                            style="padding: 0.5rem; border: 1px dashed var(--border-color); background: #fafafa; border-radius: 4px; margin-bottom: 0.5rem; cursor: pointer;">
+                        <input type="text" id="image" name="image" required
+                            placeholder="https://example.com/image.jpg or base64 data" style="margin-bottom: 0.5rem;">
                         <img id="image-preview" src="" alt="Preview" class="preview-image">
                     </div>
 
@@ -237,9 +281,8 @@
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn-primary">Add Product</button>
-                    <button type="button" class="btn-secondary"
-                        onclick="window.location.href='shop.html'">Cancel</button>
+                    <button type="submit" id="submit-btn" class="btn-primary">Add Product</button>
+                    <button type="button" class="btn-secondary" onclick="resetProductForm()">Cancel</button>
                 </div>
             </form>
         </div>
@@ -313,12 +356,18 @@
                 document.getElementById(tab.dataset.tab).classList.add('active');
 
                 // Load data if switching to tab
+                if (tab.dataset.tab === 'products') loadProducts();
                 if (tab.dataset.tab === 'users') loadUsers();
                 if (tab.dataset.tab === 'orders') loadOrders();
             });
         });
 
-        // Image preview
+        // Load initially
+        window.addEventListener('DOMContentLoaded', () => {
+            if (typeof loadProducts === 'function') loadProducts();
+        });
+
+        // Image URL preview
         document.getElementById('image').addEventListener('input', function (e) {
             const preview = document.getElementById('image-preview');
             if (e.target.value) {
@@ -326,6 +375,22 @@
                 preview.style.display = 'block';
             } else {
                 preview.style.display = 'none';
+            }
+        });
+
+        // Image file upload handling
+        document.getElementById('imageFile').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (evt) {
+                    const base64Data = evt.target.result;
+                    document.getElementById('image').value = base64Data;
+                    const preview = document.getElementById('image-preview');
+                    preview.src = base64Data;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
             }
         });
     </script>

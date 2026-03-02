@@ -30,7 +30,7 @@
                     <a href="#">Privacy Policy</a>
                 </div>
             </div>
-            <a href="#">Orders</a>
+            <a href="orders.html">Orders</a>
             <a href="#" class="search-icon"><i class="fas fa-search"></i></a>
         </nav>
     </header>
@@ -89,6 +89,68 @@
                 </div>
                 <input type="hidden" id="totalAmount">
 
+                <div class="payment-section" style="margin-top: 2rem; border-top: 1px solid #eee; padding-top: 1.5rem;">
+                    <h3>Payment Method</h3>
+                    <div class="payment-options"
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                        <label class="payment-option">
+                            <input type="radio" name="paymentMethod" value="Credit Card" checked style="display: none;">
+                            <div class="option-card"
+                                style="padding: 1rem; border: 1px solid #ddd; border-radius: 8px; text-align: center; cursor: pointer; transition: all 0.3s ease;">
+                                <i class="fas fa-credit-card"
+                                    style="font-size: 1.5rem; margin-bottom: 0.5rem; display: block; color: #555;"></i>
+                                <span>Card</span>
+                            </div>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="paymentMethod" value="UPI" style="display: none;">
+                            <div class="option-card"
+                                style="padding: 1rem; border: 1px solid #ddd; border-radius: 8px; text-align: center; cursor: pointer; transition: all 0.3s ease;">
+                                <i class="fas fa-mobile-alt"
+                                    style="font-size: 1.5rem; margin-bottom: 0.5rem; display: block; color: #555;"></i>
+                                <span>UPI</span>
+                            </div>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="paymentMethod" value="Net Banking" style="display: none;">
+                            <div class="option-card"
+                                style="padding: 1rem; border: 1px solid #ddd; border-radius: 8px; text-align: center; cursor: pointer; transition: all 0.3s ease;">
+                                <i class="fas fa-university"
+                                    style="font-size: 1.5rem; margin-bottom: 0.5rem; display: block; color: #555;"></i>
+                                <span>Net Banking</span>
+                            </div>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="paymentMethod" value="Cash on Delivery" style="display: none;">
+                            <div class="option-card"
+                                style="padding: 1rem; border: 1px solid #ddd; border-radius: 8px; text-align: center; cursor: pointer; transition: all 0.3s ease;">
+                                <i class="fas fa-truck"
+                                    style="font-size: 1.5rem; margin-bottom: 0.5rem; display: block; color: #555;"></i>
+                                <span>COD</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Card Details (Hidden by default, shown if Credit Card selected) -->
+                    <div id="card-details" style="margin-top: 1.5rem;">
+                        <div class="form-group full-width">
+                            <label for="card-number">Card Number</label>
+                            <input type="text" id="card-number" placeholder="XXXX XXXX XXXX XXXX">
+                        </div>
+                        <div class="form-grid"
+                            style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+                            <div class="form-group">
+                                <label for="expiry">Expiry (MM/YY)</label>
+                                <input type="text" id="expiry" placeholder="MM/YY">
+                            </div>
+                            <div class="form-group">
+                                <label for="cvv">CVV</label>
+                                <input type="password" id="cvv" placeholder="XXX">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="form-actions" style="margin-top: 1.5rem;">
                     <button type="submit" class="btn-primary">Place Order</button>
                     <button type="button" class="btn-secondary"
@@ -105,6 +167,7 @@
     </footer>
     <script type="module" src="auth-check.js"></script>
     <script type="module" src="cart.js"></script>
+    <script src="luxury-effects.js"></script>
 </body>
 
 </html>

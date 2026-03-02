@@ -39,6 +39,16 @@ const OrderSchema = new mongoose.Schema({
         zip: String,
         state: String,
         country: String
+    },
+    paymentMethod: {
+        type: String,
+        enum: ['Credit Card', 'UPI', 'Net Banking', 'Cash on Delivery'],
+        default: 'Cash on Delivery'
+    },
+    paymentStatus: {
+        type: String,
+        enum: ['Pending', 'Paid', 'Failed', 'Refunded'],
+        default: 'Pending'
     }
 }, { timestamps: true });
 
