@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, Navigate } from 'react-router-dom';
-import { ChevronRight, ShieldCheck, CreditCard, Truck, MapPin, Loader2, Lock, Shield, CheckCircle2 } from 'lucide-react';
+import { ChevronRight, ShieldCheck, CreditCard, Truck, MapPin, Loader2, Lock, Shield, CheckCircle2, QrCode, Smartphone } from 'lucide-react';
 import api from '../utils/api';
 import { AnimatePresence } from 'framer-motion';
 
@@ -18,9 +18,9 @@ const CheckoutPage = () => {
         street: '',
         city: '',
         state: '',
-        zip: '',
         country: 'India',
-        paymentMethod: 'Cash on Delivery'
+        paymentMethod: 'Cash on Delivery',
+        upiId: ''
     });
 
     if (!user) return <Navigate to="/login" />;
@@ -92,7 +92,7 @@ const CheckoutPage = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="fixed inset-0 z-[100] bg-black/90 flex flex-col items-center justify-center text-white backdrop-blur-xl"
+                    className="fixed inset-0 z-100 bg-black/90 flex flex-col items-center justify-center text-white backdrop-blur-xl"
                 >
                     <motion.div
                         initial={{ scale: 0.9, opacity: 0 }}
@@ -246,14 +246,16 @@ const CheckoutPage = () => {
                             <div className="space-y-4">
                                 {[
                                     { id: 'cod', label: 'Cash on Delivery', desc: 'Secure payment at your doorstep.' },
+                                    { id: 'upi', label: 'UPI / QR', desc: 'Pay via PhonePe, GPay, Paytm.' },
                                     { id: 'card', label: 'Card Payment', desc: 'Visa, Mastercard, AMEX.', disabled: true },
-                                    { id: 'upi', label: 'UPI / QR', desc: 'Pay via PhonePe, GPay, Paytm.', disabled: true }
                                 ].map((method) => (
-                                    <label key={method.id} className={`flex items-start gap-4 p-4 border transition-all ${method.disabled ? 'opacity-40 cursor-not-allowed' : 'border-zinc-100 hover:border-zinc-300 cursor-pointer'}`}>
+                                    <label key={method.id} className={`flex items-start gap-4 p-4 border transition-all ${method.disabled ? 'opacity-40 cursor-not-allowed' : 'border-zinc-100 hover:border-zinc-300 cursor-pointer'} ${formData.paymentMethod === method.label ? 'border-zinc-900 bg-zinc-50' : ''}`}>
                                         <input
                                             type="radio"
                                             name="paymentMethod"
-                                            defaultChecked={method.id === 'cod'}
+                                            value={method.label}
+                                            checked={formData.paymentMethod === method.label}
+                                            onChange={handleChange}
                                             disabled={method.disabled}
                                             className="mt-1 accent-black"
                                         />
@@ -264,6 +266,50 @@ const CheckoutPage = () => {
                                     </label>
                                 ))}
                             </div>
+
+                            <AnimatePresence>
+                                {formData.paymentMethod === 'UPI / QR' && (
+                                    <motion.div
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: 'auto', opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        className="overflow-hidden"
+                                    >
+                                        <div className="p-6 border border-zinc-100 bg-zinc-50/50 space-y-6">
+                                            <div className="flex flex-col md:flex-row gap-8 items-center">
+                                                {/* QR Simulation */}
+                                                <div className="w-32 h-32 bg-white border border-zinc-100 p-2 relative group cursor-pointer shrink-0">
+                                                    <QrCode className="w-full h-full text-zinc-200 group-hover:text-black transition-colors" />
+                                                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                                        <span className="text-[8px] font-black uppercase tracking-tighter bg-white px-2 py-1">ESSENCE Pay</span>
+                                                    </div>
+                                                </div>
+
+                                                <div className="space-y-4 flex-1 w-full">
+                                                    <div className="space-y-2">
+                                                        <div className="flex items-center gap-2">
+                                                            <Smartphone className="w-3 h-3 text-zinc-400" />
+                                                            <label className="text-[9px] font-bold uppercase tracking-widest text-zinc-500">Enter UPI ID (VPA)</label>
+                                                        </div>
+                                                        <input
+                                                            type="text"
+                                                            name="upiId"
+                                                            required={formData.paymentMethod === 'UPI / QR'}
+                                                            placeholder="example@okaxis"
+                                                            value={formData.upiId}
+                                                            onChange={handleChange}
+                                                            className="w-full border-b border-zinc-200 py-2 focus:outline-none focus:border-black transition-colors bg-white font-medium text-xs placeholder:text-zinc-200"
+                                                        />
+                                                    </div>
+                                                    <p className="text-[8px] text-zinc-400 uppercase tracking-widest italic leading-relaxed">
+                                                        Scan the QR code with any UPI app or enter your ID above to receive a payment request.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
                         </div>
 
                         <div className="pt-8">
