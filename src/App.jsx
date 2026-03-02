@@ -10,6 +10,7 @@ import { CartProvider, useCart } from './context/CartContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ShoppingCart, LogIn, User, LogOut } from 'lucide-react';
 import CartPage from './pages/CartPage';
+import CheckoutPage from './pages/CheckoutPage';
 import CheckoutSuccess from './pages/CheckoutSuccess';
 
 const Account = () => <div className="pt-40 text-center font-serif italic text-3xl h-screen">My Account Dashboard...</div>;
@@ -97,6 +98,7 @@ function App() {
                                 <Route path="/account" element={<Account />} />
                                 <Route path="/orders" element={<Orders />} />
                                 <Route path="/cart" element={<CartPage />} />
+                                <Route path="/checkout" element={<CheckoutPage />} />
                                 <Route path="/checkout-success" element={<CheckoutSuccess />} />
                             </Routes>
                         </main>

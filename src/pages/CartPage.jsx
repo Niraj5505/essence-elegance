@@ -25,19 +25,12 @@ const CartPage = () => {
     const tax = 0; // Simplified for this demo
     const total = subtotal + shipping + tax;
 
-    const onCheckout = async () => {
+    const onCheckout = () => {
         setIsCheckingOut(true);
-        try {
-            // Finalize the process
-            await clearCart();
-            setTimeout(() => {
-                navigate('/checkout-success');
-            }, 800);
-        } catch (error) {
-            console.error("Checkout failed:", error);
-        } finally {
+        setTimeout(() => {
+            navigate('/checkout');
             setIsCheckingOut(false);
-        }
+        }, 500);
     };
 
     if (loading && cart.length === 0) {
